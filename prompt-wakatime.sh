@@ -9,9 +9,9 @@
     case $cmd in
       sh\ -c\ *|*/sh\ -c\ *|bash\ -c\ *|*/bash\ -c\ *|zsh\ -c\ *|*/zsh\ -c\ *)
         p=$(ps -o ppid= -p "$p"); continue ;; # hook shell wrapper
-      *.app/Contents/*codex*app-server*) app=Codex editor=codex ;;
+      *.app/Contents/*codex*app-server*) app=Codex editor=codex model=gpt/5 ;;
       *" -p "*|*" -p"|*--print*) ;; # claude -p (scripted / agents)
-      claude|claude\ *|*/claude|*/claude\ *) app="Claude Code" editor=claude-code ;;
+      claude|claude\ *|*/claude|*/claude\ *) app="Claude Code" editor=claude-code model=claude/5 ;;
     esac
     break # anything else (codex exec, codex CLI, IDEs) is skipped
   done
@@ -22,7 +22,7 @@
   url=$(sed -n 's/^[[:space:]]*api_url[[:space:]]*=[[:space:]]*//p' "$cfg" | head -n 1)
   root=$(git rev-parse --show-toplevel 2>/dev/null) || root=$PWD
   exec curl -s -m 10 -o /dev/null -u "$key:" \
-    -A "wakatime/v1.0.0 ($(uname -s | tr A-Z a-z)) sh $editor/1.0.0 $editor-wakatime/0.3.1" \
+    -A "wakatime/v1.0.0 ($(uname -s | tr A-Z a-z)) sh $model $editor/1.0.0 $editor-wakatime/0.3.2" \
     -H 'Content-Type: application/json' \
     -d "{\"entity\":\"$app\",\"type\":\"app\",\"category\":\"ai coding\",\"project\":\"${root##*/}\",\"time\":$(date +%s)}" \
     "${url:-https://api.wakatime.com/api/v1}/users/current/heartbeats"
