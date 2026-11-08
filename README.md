@@ -21,7 +21,7 @@ Needs only `curl` and an `api_key` in `~/.wakatime.cfg` (`api_url` is honoured t
 curl -fsSL https://raw.githubusercontent.com/ryanhiizy/prompt-wakatime/main/install.sh | sh
 ```
 
-This copies `prompt-wakatime.sh` to `~/.wakatime/` and adds one `UserPromptSubmit` hook to `~/.claude/settings.json` and `~/.codex/hooks.json` (needs `python3` to edit the JSON). Codex asks you to trust the hook once. No plugins, no marketplace.
+This copies `prompt-wakatime.sh` to `~/.wakatime/` and adds one `UserPromptSubmit` hook to `~/.claude/settings.json` and `~/.codex/hooks.json` (needs `python3` to edit the JSON). Codex asks you to trust the hook once.
 
 To uninstall, delete that hook entry from both files and remove `~/.wakatime/prompt-wakatime.sh`.
 
