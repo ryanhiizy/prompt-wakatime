@@ -21,8 +21,10 @@
   [ -n "$key" ] || exit
   url=$(sed -n 's/^[[:space:]]*api_url[[:space:]]*=[[:space:]]*//p' "$cfg" | head -n 1)
   root=$(git rev-parse --show-toplevel 2>/dev/null) || root=$PWD
+  host=$(scutil --get LocalHostName 2>/dev/null) || host=$(hostname)
   exec curl -s -m 10 -o /dev/null -u "$key:" \
-    -A "wakatime/v1.0.0 ($(uname -s | tr A-Z a-z)) sh $model $editor/1.0.0 $editor-wakatime/0.3.2" \
+    -A "wakatime/v1.0.0 ($(uname -s | tr A-Z a-z)) sh $model $editor/1.0.0 $editor-wakatime/0.3.3" \
+    -H "X-Machine-Name: $host" \
     -H 'Content-Type: application/json' \
     -d "{\"entity\":\"$app\",\"type\":\"app\",\"category\":\"ai coding\",\"project\":\"${root##*/}\",\"time\":$(date +%s)}" \
     "${url:-https://api.wakatime.com/api/v1}/users/current/heartbeats"
