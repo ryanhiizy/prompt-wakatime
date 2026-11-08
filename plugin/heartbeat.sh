@@ -16,9 +16,14 @@
     break # anything else (codex exec, codex CLI, IDEs) is skipped
   done
   [ -n "$app" ] || exit
-  cli=${WAKATIME_CLI:-$HOME/.wakatime/wakatime-cli}
-  [ -x "$cli" ] || cli=$(command -v wakatime-cli) || exit
+  cfg=${WAKATIME_HOME:-$HOME}/.wakatime.cfg
+  key=$(sed -n 's/^[[:space:]]*api_key[[:space:]]*=[[:space:]]*//p' "$cfg" | head -n 1)
+  [ -n "$key" ] || exit
+  url=$(sed -n 's/^[[:space:]]*api_url[[:space:]]*=[[:space:]]*//p' "$cfg" | head -n 1)
   root=$(git rev-parse --show-toplevel 2>/dev/null) || root=$PWD
-  exec "$cli" --entity "$app" --entity-type app --category "ai coding" \
-    --project "${root##*/}" --plugin "$editor/1.0.0 prompt-wakatime/0.1.0" --sync-ai-disabled
+  exec curl -s -m 10 -o /dev/null -u "$key:" \
+    -A "wakatime/v1.0.0 ($(uname -s | tr A-Z a-z)) sh $editor/1.0.0 prompt-wakatime/0.2.0" \
+    -H 'Content-Type: application/json' \
+    -d "{\"entity\":\"$app\",\"type\":\"app\",\"category\":\"ai coding\",\"project\":\"${root##*/}\",\"time\":$(date +%s)}" \
+    "${url:-https://api.wakatime.com/api/v1}/users/current/heartbeats"
 ) </dev/null >/dev/null 2>&1 &

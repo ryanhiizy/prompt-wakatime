@@ -1,6 +1,6 @@
 # prompt-wakatime
 
-Tracks **Claude Code** and **Codex** in WakaTime by prompts only. Each prompt you send fires one heartbeat (`UserPromptSubmit` hook) with the project name. No agent activity, no file tracking, no transcript parsing (`--sync-ai-disabled`). The hook forks `wakatime-cli` and returns at once.
+Tracks **Claude Code** and **Codex** in WakaTime by prompts only. Each prompt you send fires one heartbeat (`UserPromptSubmit` hook) with the project name. No agent activity, no file tracking, no transcript parsing. The hook forks one `curl` to the WakaTime API and returns at once (~7ms).
 
 Only prompts you type count. The hook checks its parent process:
 
@@ -13,7 +13,7 @@ Only prompts you type count. The hook checks its parent process:
 
 So agents that shell out to `codex exec` or `claude -p` don't log time.
 
-Needs [wakatime-cli](https://github.com/wakatime/wakatime-cli) (`~/.wakatime/wakatime-cli` or on `PATH`, e.g. `brew install wakatime-cli`) and an `api_key` in `~/.wakatime.cfg`.
+Needs only `curl` and an `api_key` in `~/.wakatime.cfg` (`api_url` is honoured too). No wakatime-cli: its "disable AI sync" mode drops `ai coding` heartbeats, and with sync on it parses transcripts and replaces them.
 
 ## Install
 
@@ -34,8 +34,9 @@ codex plugin add prompt-wakatime@prompt-wakatime
 ## What gets sent
 
 ```
-wakatime-cli --entity "Claude Code"|Codex --entity-type app --category "ai coding" \
-  --project <git root or cwd name> --plugin "claude-code|codex/1.0.0 prompt-wakatime/0.1.0" --sync-ai-disabled
+POST {api_url}/users/current/heartbeats
+User-Agent: ... claude-code|codex/1.0.0 prompt-wakatime/0.2.0
+{"entity":"Claude Code"|"Codex","type":"app","category":"ai coding","project":"<git root or cwd name>","time":<now>}
 ```
 
 Don't run the official Claude Code or Codex WakaTime plugins alongside this one, or agent activity gets tracked again.
