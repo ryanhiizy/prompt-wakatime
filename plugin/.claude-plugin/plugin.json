@@ -1,8 +1,0 @@
-{
-  "name": "prompt-wakatime",
-  "version": "0.2.0",
-  "description": "One WakaTime heartbeat per prompt. Nothing else.",
-  "author": { "name": "ryanhiizy" },
-  "repository": "https://github.com/ryanhiizy/prompt-wakatime",
-  "license": "MIT"
-}

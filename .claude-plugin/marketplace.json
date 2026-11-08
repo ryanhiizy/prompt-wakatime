@@ -1,7 +1,0 @@
-{
-  "name": "prompt-wakatime",
-  "owner": { "name": "ryanhiizy" },
-  "plugins": [
-    { "name": "prompt-wakatime", "source": "./plugin", "description": "One WakaTime heartbeat per prompt." }
-  ]
-}

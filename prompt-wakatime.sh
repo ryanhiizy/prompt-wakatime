@@ -22,7 +22,7 @@
   url=$(sed -n 's/^[[:space:]]*api_url[[:space:]]*=[[:space:]]*//p' "$cfg" | head -n 1)
   root=$(git rev-parse --show-toplevel 2>/dev/null) || root=$PWD
   exec curl -s -m 10 -o /dev/null -u "$key:" \
-    -A "wakatime/v1.0.0 ($(uname -s | tr A-Z a-z)) sh $editor/1.0.0 prompt-wakatime/0.2.0" \
+    -A "wakatime/v1.0.0 ($(uname -s | tr A-Z a-z)) sh $editor/1.0.0 prompt-wakatime/0.3.0" \
     -H 'Content-Type: application/json' \
     -d "{\"entity\":\"$app\",\"type\":\"app\",\"category\":\"ai coding\",\"project\":\"${root##*/}\",\"time\":$(date +%s)}" \
     "${url:-https://api.wakatime.com/api/v1}/users/current/heartbeats"

@@ -17,25 +17,19 @@ Needs only `curl` and an `api_key` in `~/.wakatime.cfg` (`api_url` is honoured t
 
 ## Install
 
-Claude Code:
-
 ```sh
-claude plugin marketplace add ryanhiizy/prompt-wakatime
-claude plugin install prompt-wakatime@prompt-wakatime
+curl -fsSL https://raw.githubusercontent.com/ryanhiizy/prompt-wakatime/main/install.sh | sh
 ```
 
-Codex (approve the hook when Codex asks you to trust it):
+This copies `prompt-wakatime.sh` to `~/.wakatime/` and adds one `UserPromptSubmit` hook to `~/.claude/settings.json` and `~/.codex/hooks.json` (needs `python3` to edit the JSON). Codex asks you to trust the hook once. No plugins, no marketplace.
 
-```sh
-codex plugin marketplace add ryanhiizy/prompt-wakatime
-codex plugin add prompt-wakatime@prompt-wakatime
-```
+To uninstall, delete that hook entry from both files and remove `~/.wakatime/prompt-wakatime.sh`.
 
 ## What gets sent
 
 ```
 POST {api_url}/users/current/heartbeats
-User-Agent: ... claude-code|codex/1.0.0 prompt-wakatime/0.2.0
+User-Agent: ... claude-code|codex/1.0.0 prompt-wakatime/0.3.0
 {"entity":"Claude Code"|"Codex","type":"app","category":"ai coding","project":"<git root or cwd name>","time":<now>}
 ```
 
