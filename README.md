@@ -13,7 +13,7 @@ Only prompts you type count. The hook checks its parent process:
 
 So agents that shell out to `codex exec` or `claude -p` don't log time.
 
-Needs only `curl` and an `api_key` in `~/.wakatime.cfg` (`api_url` is honoured too). No wakatime-cli: its "disable AI sync" mode drops `ai coding` heartbeats, and with sync on it parses transcripts and replaces them.
+Needs only `curl` and an `api_key` in `~/.wakatime.cfg` (`api_url` is honoured too).
 
 ## Install
 
