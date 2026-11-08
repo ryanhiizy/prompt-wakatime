@@ -4,8 +4,9 @@
 set -e
 dest="$HOME/.wakatime/prompt-wakatime.sh"
 mkdir -p "$HOME/.wakatime"
+src="$(dirname "$0")/prompt-wakatime.sh"
 case $0 in
-  */install.sh) cp "$(dirname "$0")/prompt-wakatime.sh" "$dest" ;;
+  *install.sh) [ -f "$src" ] && cp "$src" "$dest" ;;
   *) curl -fsSL https://raw.githubusercontent.com/ryanhiizy/prompt-wakatime/main/prompt-wakatime.sh -o "$dest" ;;
 esac
 chmod +x "$dest"
