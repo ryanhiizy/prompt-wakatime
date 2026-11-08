@@ -1,0 +1,12 @@
+{
+  "name": "prompt-wakatime",
+  "interface": { "displayName": "Prompt WakaTime" },
+  "plugins": [
+    {
+      "name": "prompt-wakatime",
+      "source": { "source": "local", "path": "./plugin" },
+      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
+      "category": "Productivity"
+    }
+  ]
+}
