@@ -31,7 +31,7 @@ To uninstall, delete that hook entry from both files and remove `~/.wakatime/pro
 
 ```
 POST {api_url}/users/current/heartbeats
-User-Agent: ... claude/5 claude-code/1.0.0 claude-code-wakatime/0.3.3 | gpt/5 codex/1.0.0 codex-wakatime/0.3.3
+User-Agent: ... claude/5 claude-code/1.0.0 claude-code-wakatime/0.3.4 | gpt/5 codex/1.0.0 codex-wakatime/0.3.4
 X-Machine-Name: <Mac LocalHostName, else hostname>
 {"entity":"Claude Code"|"Codex","type":"app","category":"ai coding","project":"<git root or cwd name>","time":<now>}
 ```
