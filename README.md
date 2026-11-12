@@ -7,7 +7,7 @@ Only prompts you type count. The hook checks its parent process:
 | Host | Tracked |
 | --- | --- |
 | Codex app (ChatGPT.app `codex app-server`) | yes, as **Codex** |
-| Claude Code desktop / interactive `claude` | yes, as **Claude Code** |
+| Claude Code desktop (local or SSH) / interactive `claude` | yes, as **Claude Code** |
 | `codex exec`, Codex CLI, IDE extensions | no |
 | `claude -p` / `--print` | no |
 
@@ -22,6 +22,8 @@ curl -fsSL https://raw.githubusercontent.com/ryanhiizy/prompt-wakatime/main/inst
 ```
 
 This copies `prompt-wakatime.sh` to `~/.wakatime/` and adds one `UserPromptSubmit` hook to `~/.claude/settings.json` and `~/.codex/hooks.json` (needs `python3` to edit the JSON). Codex asks you to trust the hook once.
+
+For Claude desktop SSH sessions, run the installer on the remote machine too (hooks run where Claude Code runs).
 
 To uninstall, delete that hook entry from both files and remove `~/.wakatime/prompt-wakatime.sh`.
 

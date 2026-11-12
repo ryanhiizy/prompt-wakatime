@@ -2,16 +2,20 @@
 # One WakaTime heartbeat per prompt typed in Claude Code or the Codex app.
 # Forks and returns immediately. The host is identified from the parent
 # process, since env vars like CLAUDECODE leak into nested agents.
+# The parent is read before forking: a hook's `sh -c` wrapper (Linux) exits
+# as soon as this script returns.
+info=$(ps -o ppid=,command= -p "$PPID")
 (
-  p=$PPID
   for _ in 1 2 3; do
-    cmd=$(ps -o command= -p "$p") || exit
+    info=${info#"${info%%[! ]*}"} # trim leading spaces
+    [ -n "$info" ] || exit
+    cmd=${info#* }
     case $cmd in
       sh\ -c\ *|*/sh\ -c\ *|bash\ -c\ *|*/bash\ -c\ *|zsh\ -c\ *|*/zsh\ -c\ *)
-        p=$(ps -o ppid= -p "$p"); continue ;; # hook shell wrapper
+        info=$(ps -o ppid=,command= -p "${info%% *}"); continue ;; # hook shell wrapper
       *.app/Contents/*codex*app-server*) app=Codex editor=codex model=gpt/5 ;;
       *" -p "*|*" -p"|*--print*) ;; # claude -p (scripted / agents)
-      claude|claude\ *|*/claude|*/claude\ *) app="Claude Code" editor=claude-code model=claude/5 ;;
+      claude|claude\ *|*/claude|*/claude\ *|*/claude/versions/*|*/.claude/remote/ccd-cli/*) app="Claude Code" editor=claude-code model=claude/5 ;;
     esac
     break # anything else (codex exec, codex CLI, IDEs) is skipped
   done
