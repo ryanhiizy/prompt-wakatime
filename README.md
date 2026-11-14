@@ -11,7 +11,7 @@ Only prompts you type count. The hook checks its parent process:
 | `codex exec`, Codex CLI, IDE extensions | no |
 | `claude -p` / `--print` | no |
 
-So agents that shell out to `codex exec` or `claude -p` don't log time.
+So agents that shell out to `codex exec` or `claude -p` don't log time, and neither do turns the app injects: background-task notifications, compaction resumes and reports from other sessions.
 
 Needs only `curl` and an `api_key` in `~/.wakatime.cfg` (`api_url` is honoured too).
 

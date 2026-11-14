@@ -6,6 +6,12 @@
 # as soon as this script returns.
 info=$(ps -o ppid=,command= -p "$PPID")
 (
+  # Skip turns the app injects rather than you typing them.
+  case $(head -c 4096) in
+    *'"prompt":"<task-notification>'*) exit ;; # background task finished
+    *'"prompt":"This session is being continued from a previous conversation'*) exit ;; # compaction
+    *'"prompt":"<system-reminder>\nThe session \"'*) exit ;; # report from another session
+  esac
   for _ in 1 2 3; do
     info=${info#"${info%%[! ]*}"} # trim leading spaces
     [ -n "$info" ] || exit
@@ -34,4 +40,4 @@ info=$(ps -o ppid=,command= -p "$PPID")
     -H 'Content-Type: application/json' \
     -d "{\"entity\":\"$app\",\"type\":\"app\",\"category\":\"ai coding\",\"project\":\"${root##*/}\",\"time\":$(date +%s)}" \
     "${url:-https://api.wakatime.com/api/v1}/users/current/heartbeats"
-) </dev/null >/dev/null 2>&1 &
+) <&0 >/dev/null 2>&1 & # keep the hook's stdin: background jobs default to /dev/null
