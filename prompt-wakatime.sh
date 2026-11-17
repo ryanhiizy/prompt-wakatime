@@ -6,11 +6,12 @@
 # as soon as this script returns.
 info=$(ps -o ppid=,command= -p "$PPID")
 (
-  # Skip turns the app injects rather than you typing them.
+  # Skip turns the app injects rather than you typing them. Injected turns
+  # (task notifications, CI and session events, command output) start with a tag.
   case $(head -c 4096) in
-    *'"prompt":"<task-notification>'*) exit ;; # background task finished
+    *'"prompt":"<'*) exit ;;
     *'"prompt":"This session is being continued from a previous conversation'*) exit ;; # compaction
-    *'"prompt":"<system-reminder>\nThe session \"'*) exit ;; # report from another session
+    *'"prompt":"Claude Code was restarted on the remote'*) exit ;; # SSH reconnect
   esac
   for _ in 1 2 3; do
     info=${info#"${info%%[! ]*}"} # trim leading spaces
