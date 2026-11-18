@@ -11,7 +11,7 @@ Only prompts you type count. The hook checks its parent process:
 | `codex exec`, Codex CLI, IDE extensions | no |
 | `claude -p` / `--print` | no |
 
-So agents that shell out to `codex exec` or `claude -p` don't log time, and neither do turns the app injects: background-task notifications, compaction resumes and reports from other sessions.
+So agents that shell out to `codex exec` or `claude -p` don't log time. In Claude Code, only turns the transcript marks as typed by you count, so messages from other sessions or agents, background-task notifications, compaction resumes and CI events don't. In the Codex app, turns it injects (they start with a tag) are skipped.
 
 Needs only `curl` and an `api_key` in `~/.wakatime.cfg` (`api_url` is honoured too).
 
